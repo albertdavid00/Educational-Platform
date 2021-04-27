@@ -1,0 +1,33 @@
+﻿@model PracticaV1.Models.Course
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Courses", routeValues: new { id = Model.CourseId }))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    @Html.Hidden("CourseId")
+
+    <br />
+    @Html.Label("CourseName", "Denumire curs")
+    <br />
+    @Html.Editor("CourseName")
+    <br />
+    @Html.ValidationMessageFor(m => m.CourseName, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    <label>Selectati profesorul titular</label>
+    @Html.DropDownListFor(m => m.ProfessorId,
+        new SelectList(Model.Profs, "Value", "Text"),
+        "Selectati profesor", new { @class = "form-control" })
+
+    @Html.ValidationMessageFor(m => m.ProfessorId, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    <button class="btn btn-sm btn-success" type="submit">Modifica curs</button>
+}

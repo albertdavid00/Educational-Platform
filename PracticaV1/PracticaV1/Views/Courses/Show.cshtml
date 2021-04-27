@@ -1,0 +1,124 @@
+﻿@model PracticaV1.Models.Course
+@{
+    ViewBag.Title = "Show";
+}
+<div>
+    <br /><br />
+    <a class="btn btn-info btn-sm" href="/Courses/Index" style="background-color: #36b4e8; color: black;">Inapoi</a>
+    <h2><strong>Detalii curs</strong></h2>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="panel-heading">
+            <strong>@Model.CourseName</strong>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-success pull-right" href="/Courses/Edit/@Model.CourseId">Modifica curs</a>
+            }
+        </div>
+        <hr />
+        <div class="panel-footer">
+            @if (@Model.Professor != null)
+            {
+                <p> <strong> Prof. titular: </strong> @Model.Professor.FirstName @Model.Professor.LastName </p>
+            }
+        </div>
+    </div>
+</div>
+
+@if (User.IsInRole("Professor") || User.IsInRole("Admin"))
+{
+    <div class="panel">
+        @using (Html.BeginForm(actionName: "New", controllerName: "Sections"))  // formular adaugare sectiune noua
+        {
+            <div class="panel-body text-left">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <input type="hidden" name="CourseId" value="@Model.CourseId" />
+                @Html.Label("Title", "Titlu sectiune")
+                <br />
+                <input type="text" class="form-control" name="Title">
+                @Html.ValidationMessage("Title", null, new { @class = "text-danger" })
+                <br />
+                <button class="btn-sm btn-success" style="background-color:#36b4e8;" type="submit">
+                    Adauga sectiune
+                </button>
+            </div>
+        }
+
+    </div>
+}
+<div class="row">
+
+    @foreach (var sec in Model.Sections) // listare sectiuni
+    {
+        <div class="panel panel-default col-sm-4">
+            <div class="panel-body">
+                <strong> @sec.Title </strong>
+                @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
+                {
+                    <a href="/Sections/Delete/@sec.Id">
+                        <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
+                    </a>
+                }
+                <br />
+            </div>
+            
+            <div class="panel-footer">
+                @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
+                {
+                    using (Html.BeginForm("Upload", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="sectionId" value="@sec.Id" />
+                        <label>Alegeti un fisier</label>
+                        <input type="file" name="uploadedFile" />
+                        <br />
+                        <input type="submit" value="Upload" />
+                    }
+                    <br />
+                }
+                @foreach (var file in sec.Files)
+                {
+            <div>
+
+                <a href="/Files/DownloadFile/@file.FileId"> @file.FileName </a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
+                {
+                    <a href="/Files/Delete/@file.FileId">
+                        <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
+                    </a>
+                }
+                <br />
+                <span class="label label-success" style="background-color:#36b4e8;"> @Model.Professor.FirstName @Model.Professor.LastName @file.UploadTime </span>
+                <span></span>
+                <hr />
+            </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+@*@section scripts{
+    <script>
+        function openTab(var file) {
+            window.open(file, '_blank');
+        }
+    </script>
+}*@
+
+<h3><strong>Studenti inscrisi</strong> </h3>
+<div class="panel panel-default">
+    @foreach (var student in Model.Students)
+    {
+        <div class="panel-body">
+            <strong>Student: </strong>
+            @student.FirstName @student.LastName
+            <br />
+            <small> <strong>An de studiu:</strong> @student.YearOfStudy </small>
+            <hr />
+        </div>
+
+    }
+</div>

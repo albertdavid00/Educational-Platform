@@ -1,0 +1,32 @@
+﻿@model PracticaV1.Models.Professor
+@{
+    ViewBag.Title = "Show";
+}
+<div>
+    <h2>Detalii</h2>
+    <a class="btn btn-info btn-sm" href="/Professors/Index" style="background-color: #36b4e8; color: black;">Inapoi</a>
+    <br /> <br />
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <strong>Prof. </strong>
+        <strong>@Model.FirstName</strong>
+        <strong>@Model.LastName</strong>
+        <br />
+        <span class="label label-success" style="background-color: #36b4e8;">Degree: @Model.DidacticDegree</span>
+        <br />
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"> <strong> Cursuri predate </strong> </div>
+    <div class="panel-body">
+        @foreach (var course in Model.Courses)
+        {
+            <p> @course.CourseName </p>
+            <hr />
+        }
+        
+    </div>
+</div>

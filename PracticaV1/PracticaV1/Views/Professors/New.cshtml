@@ -1,0 +1,29 @@
+﻿@model PracticaV1.Models.Professor
+@{
+    ViewBag.Title = "New";
+}
+
+<div>
+    <h2>New</h2>
+    @using (Html.BeginForm(actionName: "New", controllerName: "Professors"))
+    {
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.Label("Nume")
+        <br />
+        @Html.TextBox("LastName", null, new { @class = "form-control" })
+        <br />
+        @Html.Label("Prenume")
+        <br />
+        @Html.TextBox("FirstName", null, new { @class = "form-control" })
+        <br />
+        @Html.Label("Grad didactic")
+        <br />
+        @Html.TextBox("DidacticDegree", null, new { @class = "form-control" })
+        <br />
+        <button type="submit" style="background-color: whitesmoke; border: 1px solid black; color: black;">Adauga</button>
+
+    }
+
+
+</div>

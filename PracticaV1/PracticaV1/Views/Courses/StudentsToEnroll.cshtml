@@ -1,0 +1,23 @@
+﻿@model PracticaV1.Models.Course
+@{
+    ViewBag.Title = "StudentsToEnroll";
+}
+
+<h2>@Model.CourseName</h2>
+<div style="overflow-y:scroll;">
+    @foreach (var student in ViewBag.Students)
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <strong>@student.FirstName</strong>
+                <strong>@student.LastName</strong>
+                <br />
+                <span class="label label-success" style="background-color: #36b4e8;">An de studiu:  @student.YearOfStudy</span>
+                <a class="btn btn-success btn btn-sm pull-right" style="background-color: #36b4e8; color: black" href="/Courses/EnrollStudent/@Model.CourseId/@student.StudentId">Inscrie student</a>
+            </div>
+        </div>
+        <hr />
+    }
+
+</div>
+

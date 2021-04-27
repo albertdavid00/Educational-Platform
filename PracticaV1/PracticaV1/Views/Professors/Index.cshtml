@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<div>
+    <h2>Lista profesori</h2>
+</div>
+<br /><br />
+<div style="overflow-y:scroll;">
+    @foreach (var prof in ViewBag.Professors)
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <strong style="font-style: italic;">Prof. </strong>
+                <strong>@prof.FirstName</strong>
+                <strong>@prof.LastName</strong>
+                <br />
+                <span class="label label-success" style="background-color: #36b4e8;">@prof.DidacticDegree</span>
+                <br />
+            </div>
+            <div class="panel panel-footer panelFooter">
+                <a class="btn btn-success btn btn-sm" style="background-color: #36b4e8; color: black" href="/Professors/Show/@prof.ProfessorId">Detalii profesor</a>
+            </div>
+        </div>
+    }
+
+</div>

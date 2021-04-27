@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "New";
+}
+
+<div>
+    <h2>New</h2>
+    @using (Html.BeginForm(actionName: "New", controllerName: "Students"))
+    {
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.Label("Nume")
+        <br />
+        @Html.TextBox("LastName", null, new { @class = "form-control" })
+        <br />
+        @Html.Label("Prenume")
+        <br />
+        @Html.TextBox("FirstName", null, new { @class = "form-control" })
+        <br />
+        @Html.Label("An de studiu")
+        <br />
+        @Html.TextBox("YearOfStudy", null, new { @class = "form-control", @type = "number" });
+        <br />
+        <button type="submit" style="background-color: whitesmoke; border: 1px solid black; color: black;">Adauga</button>
+
+    }
+
+
+</div>

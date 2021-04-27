@@ -1,0 +1,27 @@
+﻿@model PracticaV1.Models.Course
+@{
+    ViewBag.Title = "New";
+}
+<div>
+    <h2>New</h2>
+    @using (Html.BeginForm(actionName: "New", controllerName: "Courses"))
+    {
+        <br />
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.Label("Denumire curs")
+        <br />
+        @Html.TextBox("CourseName", null, new { @class = "form-control" })
+        <br />
+
+        @Html.Label("Selectati profesorul titular")
+        @Html.DropDownListFor(m => m.ProfessorId, new SelectList(Model.Profs, "Value", "Text"),
+        "Selectati profesorul", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ProfessorId, "", new { @class = "text-danger" })
+        <br />
+        <br />
+        <button type="submit" style="background-color: whitesmoke; border: 1px solid black; color: black;">Adauga</button>
+
+    }
+
+
+</div>

@@ -3,21 +3,30 @@
     ViewBag.Title = "StudentsToEnroll";
 }
 
-<h2>@Model.CourseName</h2>
-<div style="overflow-y:scroll;">
-    @foreach (var student in ViewBag.Students)
-    {
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <strong>@student.FirstName</strong>
-                <strong>@student.LastName</strong>
-                <br />
-                <span class="label label-success" style="background-color: #36b4e8;">An de studiu:  @student.YearOfStudy</span>
-                <a class="btn btn-success btn btn-sm pull-right" style="background-color: #36b4e8; color: black" href="/Courses/EnrollStudent/@Model.CourseId/@student.StudentId">Inscrie student</a>
+<br />
+<br />
+<a class=" btn btn-sm" style="background-color: #7d5424; color: white" href="/Courses/Index">Inapoi</a>
+<br />
+<br />
+<div class="divIndex">
+    <h2 class="text-center h3Students customBorder" style="background-color: #ebedb9">@Model.CourseName</h2>
+    <br />
+    <div style="overflow-y:auto; width: 50%; margin: auto; height:30vw; ">
+        @foreach (var student in ViewBag.Students)
+        {
+            <div class="panel panel-default bcolor divList customBorder">
+                <div class="panel-body">
+                    <strong>@student.FirstName</strong>
+                    <strong>@student.LastName</strong>
+                    <br />
+                    <span class="label label-success" style="background-color: #7d5424;">An de studiu:  @student.YearOfStudy</span>
+                    <a class="btn btn-success btn btn-sm pull-right" style="background-color: #7d5424; color: white" href="/Courses/EnrollStudent/@Model.CourseId/@student.StudentId">Inscrie student</a>
+                </div>
             </div>
-        </div>
-        <hr />
-    }
+            <hr />
+        }
+
+    </div>
+
 
 </div>
-

@@ -13,6 +13,7 @@ namespace PracticaV1.Controllers
         private ApplicationDbContext db = new PracticaV1.Models.ApplicationDbContext();
 
         // GET: Professors
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var professors = db.Professors.OrderBy(p => p.LastName);
@@ -20,6 +21,7 @@ namespace PracticaV1.Controllers
             return View();
         }
         // Show
+        [Authorize(Roles = "Student,Admin,Professor")]
         public ActionResult Show(int id)
         {
             Professor prof = db.Professors.Find(id);
@@ -56,7 +58,7 @@ namespace PracticaV1.Controllers
                 {
                     db.Professors.Add(professor);
                     db.SaveChanges();
-                    TempData["message"] = "Informatiile au fost adaugate cu succes!";
+                   /* TempData["message"] = "Informatiile au fost adaugate cu succes!";*/
                     return RedirectToAction("Index");
                 }
                 else
@@ -70,6 +72,82 @@ namespace PracticaV1.Controllers
             }
         }
 
-        
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id)
+        {
+            Professor prof = db.Professors.Find(id);
+            ApplicationUser user = prof.User;
+            db.Professors.Remove(prof);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index", "Professors");
+
+        }
+
+        [Authorize(Roles = "Professor")]
+        public ActionResult MyProfile()
+        {
+            string uid = User.Identity.GetUserId();
+            var prof = db.Professors.Where(s => s.UserId == uid);
+            if (prof.Count() == 0)
+            {
+                return RedirectToAction("New", "Professors");
+            }
+            else
+            {
+                int pid = prof.FirstOrDefault().ProfessorId;   // Current user -> professor id
+                return RedirectToAction("Show/" + pid.ToString());
+            }
+        }
+
+        //EDIT
+        [Authorize(Roles = "Professor,Admin")]
+        public ActionResult Edit(int id)
+        {
+            Professor prof = db.Professors.Find(id);
+            if (prof.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(prof);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari";
+                return RedirectToAction("Index", "Courses");
+            }
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin, Professor")]
+        public ActionResult Edit(int id, Professor requestProfessor)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Professor prof = db.Professors.Find(id);
+
+                    if (TryUpdateModel(prof))
+                    {
+                        ///* course.CourseName = requestCourse.CourseName;
+                        // course.ProfessorId = requestCourse.ProfessorId;*/
+                        prof = requestProfessor;
+
+                        db.SaveChanges();
+                        //TempData["message"] = "Profilul a fost modificat";
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    return View(requestProfessor);
+                }
+                else
+                {
+                    return View(requestProfessor);
+                }
+            }
+            catch (Exception)
+            {
+                return View(requestProfessor);
+            }
+        }
     }
 }

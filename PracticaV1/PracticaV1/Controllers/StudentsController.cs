@@ -12,6 +12,7 @@ namespace PracticaV1.Controllers
     {
         private ApplicationDbContext db = new PracticaV1.Models.ApplicationDbContext();
         // GET: Students
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var students = db.Students.OrderBy(p => p.LastName);
@@ -19,6 +20,7 @@ namespace PracticaV1.Controllers
             return View();
         }
         // Show
+        [Authorize(Roles = "Student,Admin,Professor")]
         public ActionResult Show(int id)
         {
             Student student = db.Students.Find(id);
@@ -54,8 +56,8 @@ namespace PracticaV1.Controllers
                 {
                     db.Students.Add(student);
                     db.SaveChanges();
-                    TempData["message"] = "Informatiile au fost adaugate cu succes!";
-                    return RedirectToAction("Index");
+                   /* TempData["message"] = "Informatiile au fost adaugate cu succes!";*/
+                    return RedirectToAction("Index", "Courses");
                 }
                 else
                 {
@@ -69,25 +71,123 @@ namespace PracticaV1.Controllers
         }
 
         [Authorize(Roles = "Student,Admin,Professor")]
-        public ActionResult Search()
+        public ActionResult Search(string search)
         {
-            
+
 
             //SEARCH 
-            var search = "";
-            if (Request.Params.Get("search") != null)
+            search = search ?? "";
+            /* if (Request.Params.Get("search") != null)
+             {
+                 search = Request.Params.Get("search").Trim();
+                 var students = db.Students.Where(s => s.LastName.Contains(search));
+                 ViewBag.Students = students;
+             }
+             ViewBag.SearchString = search;
+             // END OF SEARCH BAR
+             if (TempData.ContainsKey("message"))
+             {
+                 ViewBag.Message = TempData["message"];
+             }*/
+            List<String> searchItems = new List<string>(search.Split(" .,?!()[]{};:".ToCharArray()));
+            searchItems = searchItems.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            var students = db.Students;
+            List<Student> searchStudents = new List<Student>();
+            if(searchItems.Count() > 0)
             {
-                search = Request.Params.Get("search").Trim();
-                var students = db.Students.Where(s => s.LastName.Contains(search));
-                ViewBag.Students = students;
+                foreach (var student in students)
+                {
+                    foreach (var item in searchItems.ToArray())
+                    {
+                        if (student.FirstName.Contains(item) || student.LastName.Contains(item))
+                        {
+                            searchStudents.Add(student);
+                            break;
+                        }
+                    }
+                }
             }
-            ViewBag.SearchString = search;
-            // END OF SEARCH BAR
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.Message = TempData["message"];
-            }
+            ViewBag.Students = searchStudents;
+            ViewBag.Search = search;
             return View("StudentsSearch");
         }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id)
+        {
+            Student student = db.Students.Find(id);
+            ApplicationUser user = student.User;
+            db.Students.Remove(student);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Student")]
+        public ActionResult MyProfile()
+        {
+            string uid = User.Identity.GetUserId();
+            var stud = db.Students.Where(s => s.UserId == uid);
+            if (stud.Count() == 0)
+            {
+                return RedirectToAction("New", "Students");
+            }
+            else
+            {
+                int pid = stud.FirstOrDefault().StudentId;   // Current user -> student id
+                return RedirectToAction("Show/" + pid.ToString());
+            }
+        }
+
+
+        //EDIT
+        [Authorize(Roles = "Student,Admin")]
+        public ActionResult Edit(int id)
+        {
+            Student student = db.Students.Find(id);
+            if (student.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(student);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari";
+                return RedirectToAction("Index", "Courses");
+            }
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin, Student")]
+        public ActionResult Edit(int id, Student requestStudent)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Student student = db.Students.Find(id);
+
+                    if (TryUpdateModel(student))
+                    {
+                        ///* course.CourseName = requestCourse.CourseName;
+                        // course.ProfessorId = requestCourse.ProfessorId;*/
+                        student = requestStudent;
+
+                        db.SaveChanges();
+                        //TempData["message"] = "Profilul a fost modificat";
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    return View(requestStudent);
+                }
+                else
+                {
+                    return View(requestStudent);
+                }
+            }
+            catch (Exception)
+            {
+                return View(requestStudent);
+            }
+        }
+
     }
 }

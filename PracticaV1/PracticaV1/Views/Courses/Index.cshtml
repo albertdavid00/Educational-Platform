@@ -3,32 +3,41 @@
     ViewBag.Title = "Index";
 }
 <br />
-<div>
-    <h2>Lista cursuri</h2>
-    <h1>@ViewBag.Message</h1>
-    @if (User.IsInRole("Admin"))
-    {
-        <a class="btn btn-success btn-info" style="background-color: #36b4e8; color: black" href="/Courses/New">Adauga curs</a>
-    }
-</div>
-<br />
-<br />
-<div style="overflow-y:scroll;">
-    @foreach (var course in ViewBag.Courses)
-    {
-        <div class="panel panel-default">
-            <div class="panel-body">
+<div class="divIndex">
+    <div>
+        <h2 class="text-center h3Students customBorder " style="background-color: #ebedb9"> <strong>Cursuri</strong></h2>
+        <h1>@ViewBag.Message</h1>
+        @if (User.IsInRole("Admin"))
+        {
+        <div class="text-center">
+            <a class="btn-sm btn-success btn-info bcolor customBorder" style="color: black; margin:auto;" href="/Courses/New">Adauga curs</a>
+        </div>
+        }
+    </div>
+    <br />
+    <br />
+    <div style="overflow-y:auto; height:29vw;" class="panelIndex">
+        @foreach (var course in ViewBag.Courses)
+        {
+        <div class="panel panel-default bcolor divBlocks customBorder">
+            <div class="panel-body text-center">
                 <strong>@course.CourseName</strong>
             </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="panel panel-footer panelFooter">
+                    <a class="btn btn-success btn btn-sm" style="background-color: #7d5424; color: white" href="/Courses/Show/@course.CourseId">Detalii curs</a>
 
-            <div class="panel panel-footer panelFooter">
-                <a class="btn btn-success btn btn-sm" style="background-color: #36b4e8; color: black" href="/Courses/Show/@course.CourseId">Detalii curs</a>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a class="btn btn-success btn btn-sm pull-right" style="background-color: #36b4e8; color: black" href="/Courses/StudentsToEnroll/@course.CourseId">Inscrie studenti</a>
-                }
-            </div>
+                    <a class="btn btn-success btn btn-sm pull-right" style="background-color: #7d5424; color: white" href="/Courses/StudentsToEnroll/@course.CourseId">Inscrie studenti</a>
+                </div>
+            }
+            else
+            {
+                <div class="panel panel-footer panelFooter text-center">
+                    <a class="btn btn-success btn btn-sm" style="background-color: #7d5424; color: white" href="/Courses/Show/@course.CourseId">Detalii curs</a>
+                </div>
+            }
         </div>
-    }
-
+        }
+    </div>
 </div>

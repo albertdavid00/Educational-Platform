@@ -1,6 +1,12 @@
-﻿body {
+﻿@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+    /* background-color: #d6f3ffad;*/
+    background-image: url("https://wallpaperaccess.com/full/1426875.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Prompt', sans-serif !important;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,3 +28,161 @@ select,
 textarea {
     max-width: 280px;
 }
+
+footer {
+    font-family: 'Audiowide', cursive;
+    background: #7d5424;
+    width: 100%;
+    margin-bottom: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+footer > p {
+    color: white;
+    align-content: center;
+    margin: auto 0 auto 0;
+    padding: 0.3%;
+}
+
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+.bigFont{
+    font-size: 3rem;
+}
+
+.divFiles{
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.divStudentsCourse{
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top:1px;
+    border-radius: 5px;
+}
+
+.h3Students{
+    background-color: white;
+    padding: 2px;
+    border-radius: 20px;
+    margin: auto;
+    width: 80%;   
+}
+.h3Studentsv2 {
+    background-color: #ebedb9;
+    padding: 2px;
+    border-radius: 20px;
+    margin: auto;
+    width: 80%;
+}
+.divIndex {
+    /*background-color: #7d5424;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 1px;
+    border-radius: 20px;
+}
+
+.customBorder {
+    box-sizing: border-box;
+    border: 3px solid #7d5424;
+}
+
+.formEdit {
+    box-sizing: border-box;
+    border: 10px solid #7d5424;
+    background-color: #ebedb9;
+    padding: 15px;
+    text-align: center;
+    width: 25%;
+    border-radius: 30px;
+    margin: auto;
+}
+
+.customLayout {
+    background-color: #7d5424 !important;
+}
+
+.formLog {
+    box-sizing: border-box;
+    border: 10px solid #7d5424;
+    background-color: #ebedb9;
+    padding: 15px;
+    text-align: center;
+    width: 38%;
+    border-radius: 30px;
+    margin: auto;
+}
+.bcolor {
+    background-color:#ebedb9;
+}
+
+.panelIndex {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    width: 80%;
+
+}
+.divBlocks{
+    padding: 10px;
+    margin: 10%;
+    width: 85%;
+}
+.divList{
+    width: 95%;
+    margin: auto;
+}
+.divNewSection{
+    width: 50%;
+    margin: auto;
+    border-radius: 30px;
+    margin-top: 3%;
+}
+
+.courseShow{
+    width: 50%;
+    margin: auto;
+    border-radius: 30px;
+    margin-top: 3%;
+}
+.showEntity{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #7d5424;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ebedb9;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ebedb9;
+        border: 2px solid #7d5424;
+    }

@@ -4,24 +4,27 @@
 }
 <div>
     <br /><br />
-    <a class="btn btn-info btn-sm" href="/Courses/Index" style="background-color: #36b4e8; color: black;">Inapoi</a>
-    <h2><strong>Detalii curs</strong></h2>
+    <a class="btn btn-info btn-sm" href="/Courses/Index" style="background-color: #7d5424; color: white;">Inapoi</a>
 </div>
-
-<div class="panel panel-default">
+<br />
+<div class="panel panel-default customBorder bcolor courseShow">
     <div class="panel-body">
-        <div class="panel-heading">
+        <div class="panel-heading text-center bigFont">
             <strong>@Model.CourseName</strong>
-            @if (User.IsInRole("Admin"))
-            {
-                <a class="btn btn-success pull-right" href="/Courses/Edit/@Model.CourseId">Modifica curs</a>
-            }
+
         </div>
         <hr />
         <div class="panel-footer">
             @if (@Model.Professor != null)
             {
-                <p> <strong> Prof. titular: </strong> @Model.Professor.FirstName @Model.Professor.LastName </p>
+                <p class="text-center"> <strong> Prof. titular: </strong> @Model.Professor.FirstName @Model.Professor.LastName </p>
+
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-danger pull-right" href="/Courses/Delete/@Model.CourseId">Sterge curs</a>
+                <a class="btn btn-warning" href="/Courses/Edit/@Model.CourseId" style="margin-right:5px">Modifica curs</a>
+
             }
         </div>
     </div>
@@ -29,18 +32,18 @@
 
 @if (User.IsInRole("Professor") || User.IsInRole("Admin"))
 {
-    <div class="panel">
+    <div class="panel customBorder bcolor text-center divNewSection">
         @using (Html.BeginForm(actionName: "New", controllerName: "Sections"))  // formular adaugare sectiune noua
         {
-            <div class="panel-body text-left">
+            <div class="panel-body text-center " style="margin:auto">
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                 <input type="hidden" name="CourseId" value="@Model.CourseId" />
                 @Html.Label("Title", "Titlu sectiune")
                 <br />
-                <input type="text" class="form-control" name="Title">
+                <input type="text" class="form-control text-center" style="margin: auto" name="Title">
                 @Html.ValidationMessage("Title", null, new { @class = "text-danger" })
                 <br />
-                <button class="btn-sm btn-success" style="background-color:#36b4e8;" type="submit">
+                <button class="btn-sm btn-success" style="background-color:#7d5424;" type="submit">
                     Adauga sectiune
                 </button>
             </div>
@@ -48,23 +51,27 @@
 
     </div>
 }
-<div class="row">
+<br />
+<div class="row" style="margin-right: 0px !important; margin-left:0px !important; border-radius:50px">
 
     @foreach (var sec in Model.Sections) // listare sectiuni
     {
-        <div class="panel panel-default col-sm-4">
-            <div class="panel-body">
-                <strong> @sec.Title </strong>
-                @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
-                {
-                    <a href="/Sections/Delete/@sec.Id">
-                        <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
-                    </a>
-                }
+        <div class="panel panel-default col-sm-4 " style="background-color:#7d5424; padding-bottom:10px;  border-radius:20px">
+            <div class="panel-body text-center ">
+                <div style="background-color: white; padding:2px; border-radius: 5px;">
+                    <strong> @sec.Title </strong>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
+                    {
+                        <a href="/Sections/Delete/@sec.Id">
+                            <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
+                        </a>
+                    }
+                </div>
                 <br />
             </div>
-            
-            <div class="panel-footer">
+
+            <div class="panel-footer bcolor" style="border-radius: 20px">
                 @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
                 {
                     using (Html.BeginForm("Upload", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -79,20 +86,20 @@
                 }
                 @foreach (var file in sec.Files)
                 {
-            <div>
+                    <div class="divFiles">
 
-                <a href="/Files/DownloadFile/@file.FileId"> @file.FileName </a>
-                @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
-                {
-                    <a href="/Files/Delete/@file.FileId">
-                        <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
-                    </a>
-                }
-                <br />
-                <span class="label label-success" style="background-color:#36b4e8;"> @Model.Professor.FirstName @Model.Professor.LastName @file.UploadTime </span>
-                <span></span>
-                <hr />
-            </div>
+                        <a href="/Files/DownloadFile/@file.FileId"> @file.FileName </a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Professor"))
+                        {
+                            <a href="/Files/Delete/@file.FileId">
+                                <span class="glyphicon glyphicon-remove pull-right" style="color: red"></span>
+                            </a>
+                        }
+                        <br />
+                        <span class="label label-success" style="background-color:#7d5424;"> @Model.Professor.FirstName @Model.Professor.LastName @file.UploadTime </span>
+                        <span></span>
+                        <hr />
+                    </div>
                 }
             </div>
         </div>
@@ -101,24 +108,31 @@
 </div>
 
 @*@section scripts{
-    <script>
-        function openTab(var file) {
-            window.open(file, '_blank');
-        }
-    </script>
-}*@
-
-<h3><strong>Studenti inscrisi</strong> </h3>
-<div class="panel panel-default">
-    @foreach (var student in Model.Students)
+        <script>
+            function openTab(var file) {
+                window.open(file, '_blank');
+            }
+        </script>
+    }*@
+<div class="divStudentsCourse text-center">
+    <h3 class="text-center h3Studentsv2 customBorder"><strong>Studenti inscrisi</strong> </h3>
+    @if (User.IsInRole("Admin"))
     {
-        <div class="panel-body">
-            <strong>Student: </strong>
-            @student.FirstName @student.LastName
-            <br />
-            <small> <strong>An de studiu:</strong> @student.YearOfStudy </small>
-            <hr />
-        </div>
-
+        <br />
+        <a class="btn btn-warning btn-sm text-center" style="margin:" href="/Courses/StudentsToRemove/@Model.CourseId">Elimina studenti</a>
     }
+    <div class="panelIndex">
+        @foreach (var student in Model.Students)
+        {
+            <div class="panel panel-default bcolor divBlocks customBorder text-center" style="border-radius: 25px; padding-top:10%">
+                <strong>Student: </strong>
+                @student.FirstName @student.LastName
+                <br />
+                <small> <strong>An de studiu:</strong> @student.YearOfStudy </small>
+                <br />
+                <a class="btn btn-default" style="background-color: #7d5424; color: white;" href="/Students/Show/@student.StudentId">Vezi profil</a>
+                <hr />
+            </div>
+        }
+    </div>
 </div>

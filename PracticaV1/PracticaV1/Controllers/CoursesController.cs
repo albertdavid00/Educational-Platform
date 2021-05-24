@@ -169,6 +169,42 @@ namespace PracticaV1.Controllers
             return RedirectToAction("StudentsToEnroll/" + id.ToString());
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult StudentsToRemove(int id)
+        {
+            Course course = db.Courses.Find(id);
+            var studentsAlreadyEnrolled = course.Students.ToList();
+            ViewBag.Students = studentsAlreadyEnrolled;
+            return View(course);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult RemoveStudent(int id, int id2)
+        {
+            Course course = db.Courses.Find(id);
+            Student student = db.Students.Find(id2);
+            student.Courses.Remove(course);
+            course.Students.Remove(student);
+            db.SaveChanges();
+            return RedirectToAction("StudentsToRemove/" + id.ToString());
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                Course course = db.Courses.Find(id);
+                db.Courses.Remove(course);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
+        }
 
         [NonAction]
         public IEnumerable<SelectListItem> GetAllProfessors()

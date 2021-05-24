@@ -1,0 +1,41 @@
+﻿@model PracticaV1.Models.Student
+@{
+    ViewBag.Title = "Edit";
+}
+
+<br />
+<br />
+<div class="formEdit">
+    <h2>Edit</h2>
+
+    @using (Html.BeginForm(actionName: "Edit", controllerName: "Students", routeValues: new { id = Model.StudentId }))
+    {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.Hidden("StudentId")
+
+        <br />
+        @Html.Label("LastName", "Nume")
+        <br />
+        @Html.Editor("LastName")
+        <br />
+        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+        <br />
+        @Html.Label("FirstName", "Prenume")
+        <br />
+        @Html.Editor("FirstName")
+        <br />
+        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+
+        @Html.Label("YearOfStudy", "An de studiu")
+        <br />
+        @Html.Editor("YearOfStudy")
+        <br />
+        @Html.ValidationMessageFor(m => m.YearOfStudy, "", new { @class = "text-danger" })
+        <br />
+        <br />
+
+        <button class="btn btn-sm btn-success" type="submit">Modifica profil</button>
+    }
+
+</div>
+
